@@ -61,7 +61,13 @@ export const currentExhibitionQuery = groq`
     location,
     accentColour,
     body,
-    images,
+    "images": images[] {
+      _key,
+      caption,
+      hotspot,
+      crop,
+      asset,
+    },
     accessInfo,
     contributors,
     "featuredEvent": featuredEvent-> {

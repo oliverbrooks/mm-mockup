@@ -1,10 +1,22 @@
+import React from 'react'
 import Link from 'next/link'
+import type { SanityImageSource } from '@sanity/image-url'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { RemixingM } from '@/components/Logo'
 import { PhotoTile } from '@/components/PhotoTile'
 import { client } from '@/sanity/lib/client'
 import { currentExhibitionQuery } from '@/sanity/lib/queries'
+
+// Five grid slots — shapes and fallback tones are fixed by position.
+// Upload images in this order in Sanity Studio.
+const GRID_SLOTS = [
+  { className: 'angled', tone: 'red',    label: 'Installation view, central gallery', style: { gridRow: 'span 2' } as React.CSSProperties },
+  { className: 'cutout', tone: 'warm',   label: "Karen Arthur's dress, detail",       style: {} },
+  { className: '',       tone: 'violet', label: 'Oral history listening booth',        style: {} },
+  { className: 'torn',   tone: 'cool',   label: 'Object: suitcase, 1972',             style: {} },
+  { className: '',       tone: 'yellow', label: 'Entrance signage',                   style: {} },
+] as const
 
 export const revalidate = 3600
 
@@ -25,7 +37,7 @@ const FALLBACK_EXHIBITION = {
     "Each contributor has chosen an object that matters to them. The objects sit alongside portraits and audio interviews, forming a remixed archive that crosses decades, cultures and neighbourhoods.",
     "Schools can book free group visits with curriculum-linked worksheets for KS3–KS5. Access tours run every Saturday at 2pm.",
   ],
-  images: [] as { caption?: string }[],
+  images: [] as (SanityImageSource & { caption?: string })[],
   accessInfo: [
     { label: 'Nearest station', value: 'Lewisham (DLR, National Rail)' },
     { label: 'Step-free',       value: 'Fully accessible, lift to gallery' },
@@ -158,11 +170,23 @@ export default async function ExhibitionPage() {
       {/* IMAGE GRID */}
       <section className="wrap sp">
         <div className="layout-exhibition-img">
-          <PhotoTile tone="red"    label="Installation view, central gallery" style={{ gridRow: 'span 2' }} className="angled"/>
-          <PhotoTile tone="warm"   label="Karen Arthur's dress, detail" className="cutout"/>
-          <PhotoTile tone="violet" label="Oral history listening booth"/>
-          <PhotoTile tone="cool"   label="Object: suitcase, 1972" className="torn"/>
-          <PhotoTile tone="yellow" label="Entrance signage"/>
+          {GRID_SLOTS.map((slot, i) => {
+            const img = ex.images?.[i]
+            return (
+              <PhotoTile
+                key={i}
+                tone={slot.tone}
+                label={img?.caption ?? slot.label}
+                image={img ?? null}
+                imageAlt={img?.caption ?? slot.label}
+                imageSizes={i === 0 ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 100vw, 25vw'}
+                imageWidth={i === 0 ? 1200 : 700}
+                imageHeight={i === 0 ? 1600 : 700}
+                className={slot.className}
+                style={slot.style}
+              />
+            )
+          })}
         </div>
       </section>
 

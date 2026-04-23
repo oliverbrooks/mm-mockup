@@ -93,7 +93,7 @@ export default function HomeA() {
         </div>
       </section>
 
-      <Marquee items={MARQUEE_ITEMS} bg="var(--mm-black)" color="var(--mm-yellow)" />
+      <Marquee items={MARQUEE_ITEMS} mode="ticker" />
 
       {/* ———— STORIES STRIP ———— */}
       <section className="wrap" style={{ padding: '96px 48px' }}>

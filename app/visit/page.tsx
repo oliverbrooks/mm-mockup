@@ -10,7 +10,8 @@ export default function VisitPage() {
     <div style={{ background: '#fff', color: '#000' }}>
       <Nav active="Visit" />
 
-      <section style={{ padding: '64px 0 0', borderBottom: '1.5px solid #000' }}>
+      {/* HERO */}
+      <section style={{ paddingTop: 64, borderBottom: '1.5px solid #000' }}>
         <div className="wrap">
           <div className="eyebrow" style={{ color: 'var(--mm-orange)', marginBottom: 16 }}>
             <span className="dot" style={{ background: 'var(--mm-orange)', marginRight: 8, verticalAlign: 'middle' }}/>
@@ -28,7 +29,7 @@ export default function VisitPage() {
         <div style={{ marginTop: 48, position: 'relative' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/img/south-entrance.jpg" alt="Architect's render — Crutched Friars south entrance"
-            style={{ height: 560, width: '100%', objectFit: 'cover', display: 'block', border: '1.5px solid #000' }}/>
+            className="visit-hero-img" />
           <div style={{ position: 'absolute', bottom: 24, left: 48, background: '#000', color: '#fff', padding: '12px 20px', fontWeight: 600, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             65 Crutched Friars · Render by the architects
           </div>
@@ -36,18 +37,18 @@ export default function VisitPage() {
       </section>
 
       {/* WHAT'S INSIDE */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
+      <section className="wrap sp">
         <div className="eyebrow" style={{ marginBottom: 16 }}>What&apos;s inside</div>
         <h2 className="h-section" style={{ margin: '0 0 40px', maxWidth: 800 }}>Four floors. One migrating story.</h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div className="layout-inside-grid">
           {[
             { tag: 'Lower ground', title: 'Auditorium & galleries', copy: 'A flexible 200-seat auditorium at the heart of a 1,200 sq m journey through centuries of arrivals and departures.', img: '/img/auditorium.jpg', colour: 'var(--mm-blue)' },
             { tag: 'Ground floor', title: 'Double-height lobby', copy: 'A dramatic arrival space where rotating exhibitions, co-produced with contributors, meet you on the way in.', img: '/img/double-height.jpg', colour: 'var(--mm-orange)' },
             { tag: 'Street level', title: 'South external entrance', copy: 'Stepping out onto Crutched Friars — an accessible new threshold into the City.', img: '/img/south-entrance.jpg', colour: 'var(--mm-green)' },
             { tag: 'Courtyard + cafe', title: 'Courtyard entrance', copy: "A courtyard entrance opening into a restaurant and shop featuring migration's impact on UK food & business.", img: '/img/courtyard-entrance.jpg', colour: 'var(--mm-yellow)' },
           ].map((f, i) => (
-            <div key={f.title} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '1.5px solid #000', background: '#fff', minHeight: 260 }}>
+            <div key={f.title} className="layout-floor-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={f.img} alt={f.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}/>
               <div style={{ padding: 32, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -64,11 +65,11 @@ export default function VisitPage() {
       </section>
 
       {/* WHILE YOU WAIT */}
-      <section style={{ background: 'var(--mm-paper)', padding: '96px 0', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-paper)', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
         <div className="wrap">
           <div className="eyebrow" style={{ color: 'var(--mm-blue)', marginBottom: 12 }}>While you wait for 2028</div>
           <h2 className="h-section" style={{ margin: '0 0 40px' }}>Where to find us now</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+          <div className="layout-3col">
             {[
               { place: 'Lewisham', tone: 'warm', meta: 'Through 27 Jul 2026', title: 'All Our Stories', copy: 'Our main current exhibition, in the Lewisham Shopping Centre.' },
               { place: 'Online', tone: 'cool', meta: 'Anytime', title: 'Digital stories', copy: 'Oral histories, archive features and downloadable schools resources.' },
@@ -88,8 +89,8 @@ export default function VisitPage() {
       </section>
 
       {/* ACCESSIBILITY */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64 }}>
+      <section className="wrap sp">
+        <div className="layout-access">
           <div>
             <div className="eyebrow" style={{ marginBottom: 12 }}>Access for all</div>
             <h2 className="h-section" style={{ margin: 0 }}>Welcome means welcome.</h2>
@@ -97,7 +98,7 @@ export default function VisitPage() {
               The new museum is being designed to be fully accessible from day one.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="layout-access-features">
             {[
               ['Step-free', 'Full lift and ramp access throughout.'],
               ['BSL tours', 'Monthly, free. Book online.'],

@@ -11,12 +11,13 @@ export default function ExhibitionPage() {
     <div style={{ background: '#fff', color: '#000' }}>
       <Nav active="Exhibitions" />
 
+      {/* HERO */}
       <section style={{ padding: '40px 0 80px', borderBottom: '1.5px solid #000', background: 'var(--mm-orange)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: -40, right: '5%', opacity: 0.25 }}>
           <RemixingM size={320} color="#000" interval={2200} seed={2}/>
         </div>
         <div className="wrap" style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, fontSize: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, fontSize: 14, flexWrap: 'wrap' }}>
             <Link href="/" style={{ opacity: 0.9 }}>Home</Link>
             <span style={{ opacity: 0.5 }}>/</span>
             <span style={{ opacity: 0.9 }}>Exhibitions</span>
@@ -40,14 +41,14 @@ export default function ExhibitionPage() {
             <div><div className="meta" style={{ opacity: 0.8 }}>Dates</div><div style={{ fontWeight: 700, fontSize: 20, marginTop: 4 }}>7 Mar — 27 Jul 2026</div></div>
             <div><div className="meta" style={{ opacity: 0.8 }}>Location</div><div style={{ fontWeight: 700, fontSize: 20, marginTop: 4 }}>Lewisham Shopping Centre</div></div>
             <div><div className="meta" style={{ opacity: 0.8 }}>Admission</div><div style={{ fontWeight: 700, fontSize: 20, marginTop: 4 }}>Free</div></div>
-            <a href="#" className="btn btn--yellow btn--big" style={{ marginLeft: 'auto' }}>Book free entry →</a>
+            <a href="#" className="btn btn--yellow btn--big">Book free entry →</a>
           </div>
         </div>
       </section>
 
       {/* IMAGE GRID */}
-      <section className="wrap" style={{ padding: '64px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gridTemplateRows: '280px 280px', gap: 16 }}>
+      <section className="wrap sp">
+        <div className="layout-exhibition-img">
           <PhotoTile tone="red" label="Installation view, central gallery" style={{ gridRow: 'span 2' }} className="angled"/>
           <PhotoTile tone="warm" label="Karen Arthur's dress, detail" className="cutout"/>
           <PhotoTile tone="violet" label="Oral history listening booth"/>
@@ -57,7 +58,7 @@ export default function ExhibitionPage() {
       </section>
 
       {/* ABOUT + VISIT INFO */}
-      <section className="wrap" style={{ padding: '48px 48px 96px', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 64 }}>
+      <section className="wrap sp layout-exhibition-info">
         <div className="prose" style={{ fontSize: 19, lineHeight: 1.6 }}>
           <div className="eyebrow" style={{ color: 'var(--mm-blue)', marginBottom: 16 }}>About this exhibition</div>
           <h2 style={{ fontSize: 42, margin: '0 0 20px', lineHeight: 1.05, fontWeight: 700 }}>30 contributors. 30 ways in.</h2>
@@ -106,11 +107,11 @@ export default function ExhibitionPage() {
       </section>
 
       {/* CONTRIBUTORS */}
-      <section style={{ background: 'var(--mm-black)', color: '#fff', padding: '80px 0' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-black)', color: '#fff' }}>
         <div className="wrap">
           <div className="eyebrow" style={{ color: 'var(--mm-yellow)', marginBottom: 16 }}>Contributors</div>
           <h2 className="h-section" style={{ margin: '0 0 40px', color: '#fff' }}>30 people. One show.</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 12 }}>
+          <div className="layout-contributors">
             {[
               ['Karen Arthur', 'red'], ['Alok Mehta', 'violet'], ['Fatima Osman', 'green'],
               ['Viktor Lazarenko', 'cool'], ['Mei Tan', 'yellow'], ['Joseph Adebayo', 'warm'],

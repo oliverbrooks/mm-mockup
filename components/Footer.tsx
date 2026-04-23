@@ -23,7 +23,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: 48, marginBottom: 60 }}>
+        <div className="layout-footer-grid">
           <div>
             <div style={{ marginBottom: 20 }}>
               <Wordmark size={16} color="#fff" />
@@ -57,7 +57,7 @@ export function Footer() {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 30, borderTop: '1px solid rgba(255,255,255,0.2)' }}>
           <div style={{ fontSize: 13, opacity: 0.6 }}>© 2026 Migration Museum. Charity No. 1162925.</div>
-          <div style={{ display: 'flex', gap: 18, fontSize: 13 }}>
+          <div className="layout-footer-social" style={{ display: 'flex', gap: 18, fontSize: 13 }}>
             {SOCIALS.map((s) => (
               <a key={s} href="#" style={{ opacity: 0.7 }}>{s}</a>
             ))}

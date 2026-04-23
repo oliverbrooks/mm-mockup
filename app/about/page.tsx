@@ -10,7 +10,8 @@ export default function AboutPage() {
     <div style={{ background: '#fff', color: '#000' }}>
       <Nav active="About" />
 
-      <section style={{ padding: '80px 0 60px', borderBottom: '1.5px solid #000', background: 'var(--mm-paper)' }}>
+      {/* HERO */}
+      <section className="sp-v" style={{ borderBottom: '1.5px solid #000', background: 'var(--mm-paper)' }}>
         <div className="wrap">
           <div className="eyebrow" style={{ marginBottom: 20 }}>About the Migration Museum</div>
           <h1 className="h-display" style={{ margin: 0, maxWidth: 1000 }}>
@@ -24,9 +25,9 @@ export default function AboutPage() {
       </section>
 
       {/* MISSION */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
+      <section className="wrap sp">
         <div className="eyebrow" style={{ color: 'var(--mm-blue)', marginBottom: 20 }}>Our purpose</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+        <div className="layout-3col">
           {[
             { word: 'Reveal', color: 'var(--mm-orange)', copy: 'Revealing the human stories and lived experiences of migration.', seed: 6 },
             { word: 'Remix', color: 'var(--mm-blue)', copy: 'Remixing stories, making them hyper-relevant to today.', seed: 5 },
@@ -41,7 +42,7 @@ export default function AboutPage() {
               <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.25 }}>
                 <RemixingM size={180} color="#fff" interval={2200} seed={m.seed}/>
               </div>
-              <h2 style={{ margin: 0, fontSize: 72, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 0.9 }}>{m.word}.</h2>
+              <h2 style={{ margin: 0, fontSize: 'clamp(48px, 6vw, 72px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 0.9 }}>{m.word}.</h2>
               <p style={{ margin: 0, fontSize: 17, maxWidth: 260, position: 'relative' }}>{m.copy}</p>
             </div>
           ))}
@@ -49,9 +50,9 @@ export default function AboutPage() {
       </section>
 
       {/* HOW WE WORK */}
-      <section style={{ background: 'var(--mm-black)', color: '#fff', padding: '96px 0' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-black)', color: '#fff' }}>
         <div className="wrap">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 64 }}>
+          <div className="layout-how-we-work">
             <div>
               <div className="eyebrow" style={{ color: 'var(--mm-yellow)', marginBottom: 16 }}>How we work</div>
               <h2 className="h-section" style={{ margin: 0, color: '#fff' }}>Co-produced, always.</h2>
@@ -77,16 +78,20 @@ export default function AboutPage() {
       </section>
 
       {/* BY THE NUMBERS */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, borderTop: '1.5px solid #000' }}>
+      <section className="wrap sp">
+        <div className="layout-stats">
           {[
             ['400K+', 'Visitors, Lewisham pop-up'],
             ['60+', 'Exhibitions & pop-ups since 2013'],
             ['28', 'Migration Network partners'],
             ['2028', 'Permanent home opens'],
           ].map(([n, l], i) => (
-            <div key={l} style={{ padding: '36px 24px', borderRight: i < 3 ? '1.5px solid #000' : 'none', borderBottom: '1.5px solid #000' }}>
-              <div style={{ fontSize: 60, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1 }}>{n}</div>
+            <div key={l} style={{
+              padding: '36px 24px',
+              borderRight: i < 3 ? '1.5px solid #000' : 'none',
+              borderBottom: '1.5px solid #000',
+            }}>
+              <div style={{ fontSize: 'clamp(40px, 5vw, 60px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1 }}>{n}</div>
               <div className="meta" style={{ marginTop: 10, color: 'var(--mm-grey)' }}>{l}</div>
             </div>
           ))}
@@ -94,11 +99,11 @@ export default function AboutPage() {
       </section>
 
       {/* TEAM */}
-      <section style={{ background: 'var(--mm-paper)', padding: '96px 0', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-paper)', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
         <div className="wrap">
           <div className="eyebrow" style={{ marginBottom: 12 }}>The team</div>
           <h2 className="h-section" style={{ margin: 0, marginBottom: 40 }}>Who you&apos;ll meet</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+          <div className="layout-4col">
             {[
               ['Sophie Henderson', 'Co-founder & CEO', 'warm'],
               ['Robert Kelly', 'Digital Product Manager', 'cool'],

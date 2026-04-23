@@ -36,8 +36,8 @@ export default function HomeA() {
 
       {/* ———— HERO ———— */}
       <section style={{ position: 'relative', borderBottom: '1.5px solid #000', overflow: 'hidden' }}>
-        <div className="wrap" style={{ position: 'relative', padding: '48px 48px 72px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 48, alignItems: 'center' }}>
+        <div className="wrap" style={{ padding: '48px 48px 72px', position: 'relative' }}>
+          <div className="layout-hero">
             <div>
               <div className="eyebrow" style={{ marginBottom: 20 }}>
                 <span className="dot" style={{ background: 'var(--mm-orange)', marginRight: 8, verticalAlign: 'middle' }}/>
@@ -57,8 +57,8 @@ export default function HomeA() {
               </div>
             </div>
 
-            {/* Collage */}
-            <div style={{ position: 'relative', height: 560 }}>
+            {/* Collage — hidden on mobile via .hero-collage CSS class */}
+            <div className="hero-collage">
               <PhotoTile label="Karen Arthur, portrait" tone="warm"
                 style={{ position: 'absolute', top: 20, left: 40, width: 260, height: 340, transform: 'rotate(-4deg)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}
                 className="angled" />
@@ -96,7 +96,7 @@ export default function HomeA() {
       <Marquee items={MARQUEE_ITEMS} mode="ticker" />
 
       {/* ———— STORIES STRIP ———— */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
+      <section className="wrap sp">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 20 }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 12, color: 'var(--mm-blue)' }}>Stories, told in full</div>
@@ -105,14 +105,14 @@ export default function HomeA() {
           <a href="#" className="btn btn--ghost">All stories →</a>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 24 }}>
+        <div className="layout-stories-a">
           <StoryCardLarge tag="Oral history" tone="red" label="Karen Arthur in her studio"
             title="&ldquo;This dress is about taking up space.&rdquo;" meta="Karen Arthur · 9 min read" />
           <StoryCardSmall tag="Feature" tone="violet" title="The NHS origins" meta="7 min" label="NHS nurses 1948" />
           <StoryCardSmall tag="Exhibition" tone="yellow" title="Who Runs the World?" meta="Event recap" label="Leeds pop-up, 2023" />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: 24, marginTop: 24 }}>
+        <div className="layout-stories-b">
           <StoryCardSmall tag="Oral history" tone="green" title="Routes: the Ugandan Asians" meta="12 min" label="Family archive photo"/>
           <StoryCardSmall tag="Food" tone="cool" title="How curry became British" meta="6 min" label="Bradford street scene"/>
           <StoryCardLarge tag="Youth voices" tone="dusk" label="Workshop with Hackney students"
@@ -121,7 +121,7 @@ export default function HomeA() {
       </section>
 
       {/* ———— 2028 BLOCK ———— */}
-      <section style={{ background: 'var(--mm-black)', color: '#fff', padding: '96px 0', position: 'relative', overflow: 'hidden' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-black)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: -60, right: -60, opacity: 0.3 }}>
           <RemixingM size={400} color="var(--mm-blue)" interval={2200} seed={1}/>
         </div>
@@ -129,7 +129,7 @@ export default function HomeA() {
           <RemixingM size={360} color="var(--mm-orange)" interval={2600} seed={6}/>
         </div>
         <div className="wrap" style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+          <div className="layout-2col">
             <div>
               <div className="eyebrow" style={{ color: 'var(--mm-yellow)', marginBottom: 16 }}>The permanent home</div>
               <h2 className="h-hero" style={{ margin: 0 }}>Spring<br/>2028.</h2>
@@ -138,14 +138,15 @@ export default function HomeA() {
                 opening with galleries, a restaurant, and a shop that showcase the impact of migration on British life.
               </p>
               <Countdown />
-              <div style={{ marginTop: 36, display: 'flex', gap: 12 }}>
+              <div style={{ marginTop: 36, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <Link href="/visit" className="btn btn--yellow">The new museum →</Link>
                 <Link href="/support" className="btn btn--ghost" style={{ borderColor: '#fff', color: '#fff' }}>Help us get there</Link>
               </div>
             </div>
-            <div style={{ position: 'relative', height: 500 }}>
+            {/* Hidden on mobile via .block-2028-img CSS class */}
+            <div className="block-2028-img">
               <Image src="/img/courtyard-entrance.jpg" alt="65 Crutched Friars — courtyard entrance render"
-                fill sizes="(max-width: 720px) 100vw, 50vw"
+                fill sizes="(max-width: 768px) 0vw, 50vw"
                 style={{ objectFit: 'cover', transform: 'rotate(1.5deg)', clipPath: 'polygon(2% 4%, 98% 0%, 100% 96%, 3% 100%)' }}/>
               <div style={{
                 position: 'absolute', bottom: 20, left: 0,
@@ -160,20 +161,20 @@ export default function HomeA() {
       </section>
 
       {/* ———— EXHIBITION STRIP ———— */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
+      <section className="wrap sp">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 20 }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 12, color: 'var(--mm-orange)' }}>On now</div>
             <h2 className="h-section" style={{ margin: 0 }}>What&apos;s happening</h2>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <span className="chip">Exhibitions · 2</span>
             <span className="chip">Events · 7</span>
             <span className="chip">Online · 4</span>
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+        <div className="layout-3col">
           <EventCard date="7 MAR — 27 JUL" tag="Exhibition · Free" tone="red"
             title="All Our Stories"
             copy="Our flagship exhibition — objects, oral histories and commissioned art from contributors across Britain."
@@ -188,8 +189,8 @@ export default function HomeA() {
       </section>
 
       {/* ———— QUOTE / CO-PRODUCTION ———— */}
-      <section style={{ background: 'var(--mm-paper)', padding: '96px 0', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 64, alignItems: 'start' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-paper)', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
+        <div className="wrap layout-quote">
           <div>
             <AccentBar/>
             <div className="eyebrow" style={{ marginTop: 24, marginBottom: 12 }}>Co-production</div>
@@ -204,13 +205,13 @@ export default function HomeA() {
           <div>
             <blockquote style={{
               margin: 0, fontWeight: 600,
-              fontSize: 'clamp(28px, 3.2vw, 44px)', lineHeight: 1.15, letterSpacing: '-0.02em',
+              fontSize: 'clamp(24px, 3.2vw, 44px)', lineHeight: 1.15, letterSpacing: '-0.02em',
             }}>
               &ldquo;It&apos;s like the older you get as a Black woman, the quieter you&apos;re supposed to become.
               <span style={{ background: 'var(--mm-yellow)', padding: '0 8px' }}> This dress</span> is about taking up space.&rdquo;
             </blockquote>
             <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 14 }}>
-              <PhotoTile label="" tone="red" style={{ width: 56, height: 56, borderRadius: '50%' }}/>
+              <PhotoTile label="" tone="red" style={{ width: 56, height: 56, borderRadius: '50%', flexShrink: 0 }}/>
               <div>
                 <div style={{ fontWeight: 700 }}>Karen Arthur</div>
                 <div style={{ fontSize: 14, color: 'var(--mm-grey)' }}>Contributor, All Our Stories</div>
@@ -221,11 +222,10 @@ export default function HomeA() {
       </section>
 
       {/* ———— SUPPORT CTA ———— */}
-      <section className="wrap" style={{ padding: '96px 48px' }}>
-        <div style={{
+      <section className="wrap sp">
+        <div className="layout-cta-inner" style={{
           background: 'var(--mm-blue)', color: '#fff',
           padding: '72px 64px', borderRadius: 4,
-          display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 48, alignItems: 'center',
           position: 'relative', overflow: 'hidden',
         }}>
           <div style={{ position: 'absolute', top: -40, right: -40, opacity: 0.25 }}>

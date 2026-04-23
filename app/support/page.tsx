@@ -16,7 +16,7 @@ export default function SupportPage() {
       <Nav active="Support" />
 
       {/* HERO */}
-      <section style={{ padding: '72px 0 56px', borderBottom: '1.5px solid #000', background: 'var(--mm-violet)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section className="sp-v" style={{ borderBottom: '1.5px solid #000', background: 'var(--mm-violet)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: -60, right: '3%', opacity: 0.25 }}>
           <RemixingM size={360} color="#fff" interval={2200} seed={1}/>
         </div>
@@ -36,16 +36,16 @@ export default function SupportPage() {
 
       {/* TABS */}
       <div style={{ borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000', background: 'var(--mm-paper)', position: 'sticky', top: 67, zIndex: 40 }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
+        <div className="wrap support-tabs">
           {([
             { id: 'individual' as Tab, label: 'Individuals', sub: '£5 — £5,000', color: 'var(--mm-yellow)', num: '01' },
-            { id: 'institutional' as Tab, label: 'Institutional funders', sub: 'Foundations & trusts', color: 'var(--mm-blue)', num: '02' },
-            { id: 'corporate' as Tab, label: 'Corporate partners', sub: 'Companies & brands', color: 'var(--mm-orange)', num: '03' },
+            { id: 'institutional' as Tab, label: 'Institutional', sub: 'Foundations & trusts', color: 'var(--mm-blue)', num: '02' },
+            { id: 'corporate' as Tab, label: 'Corporate', sub: 'Companies & brands', color: 'var(--mm-orange)', num: '03' },
           ]).map((t, i) => {
             const active = tab === t.id
             return (
               <button key={t.id} onClick={() => setTab(t.id)} style={{
-                position: 'relative', padding: '24px 28px 22px', textAlign: 'left',
+                position: 'relative', padding: '20px 24px', textAlign: 'left',
                 background: active ? t.color : 'transparent', color: '#000',
                 borderLeft: i === 0 ? 'none' : '1.5px solid #000',
                 borderRight: 'none', borderTop: 'none',
@@ -53,15 +53,15 @@ export default function SupportPage() {
                 marginBottom: -2, cursor: 'pointer', transition: 'background 0.15s',
                 fontFamily: 'inherit',
               }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
                   <div>
-                    <div className="meta" style={{ fontSize: 11, color: active ? '#000' : 'var(--mm-grey)', marginBottom: 6, letterSpacing: '0.08em' }}>
+                    <div className="meta" style={{ fontSize: 11, color: active ? '#000' : 'var(--mm-grey)', marginBottom: 4, letterSpacing: '0.08em' }}>
                       {t.num} · {active ? 'Viewing' : 'Jump to'}
                     </div>
-                    <div style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.1 }}>{t.label}</div>
-                    <div style={{ fontSize: 13, color: active ? '#000' : 'var(--mm-grey)', marginTop: 4, fontWeight: 500 }}>{t.sub}</div>
+                    <div style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>{t.label}</div>
+                    <div style={{ fontSize: 12, color: active ? '#000' : 'var(--mm-grey)', marginTop: 3, fontWeight: 500 }}>{t.sub}</div>
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 700, opacity: active ? 1 : 0.35 }}>{active ? '●' : '→'}</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, opacity: active ? 1 : 0.35, flexShrink: 0 }}>{active ? '●' : '→'}</div>
                 </div>
               </button>
             )
@@ -89,7 +89,7 @@ function FundraisingBar() {
       <div style={{ height: 14, background: 'rgba(255,255,255,0.25)', borderRadius: 999, overflow: 'hidden', border: '1.5px solid #fff' }}>
         <div style={{ height: '100%', width: `${pct}%`, background: 'var(--mm-yellow)', transition: 'width 0.8s ease' }}/>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 12, opacity: 0.85 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 12, opacity: 0.85, flexWrap: 'wrap', gap: 4 }}>
         <span>Phase 1 · Site (done)</span>
         <span>Phase 2 · Fit-out (now)</span>
         <span>Phase 3 · Programme endowment</span>
@@ -117,9 +117,10 @@ function IndividualTab() {
   }
 
   return (
-    <section className="wrap" style={{ padding: '64px 48px 96px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 64 }}>
+    <section className="wrap sp">
+      <div className="layout-donation-grid">
         <div>
+          {/* Progress bar */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 32 }}>
             {[1, 2, 3].map((n) => (
               <div key={n} style={{ flex: 1, height: 6, borderRadius: 999, background: step >= n ? 'var(--mm-black)' : 'var(--mm-mid)' }}/>
@@ -183,7 +184,7 @@ function IndividualTab() {
                   </span>
                 </label>
               </div>
-              <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
+              <div style={{ marginTop: 32, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <button className="btn btn--ghost" onClick={() => setStep(1)}>← Back</button>
                 <button className="btn btn--big" onClick={() => setStep(3)} disabled={!name || !email}>Continue →</button>
               </div>
@@ -198,7 +199,7 @@ function IndividualTab() {
                 Your {freq === 'once' ? '' : freq + ' '}gift of <strong>£{giftAid ? Math.round(amount * 1.25) : amount}</strong> is confirmed.
                 A receipt is on its way to {email}.
               </p>
-              <div style={{ marginTop: 32, display: 'flex', gap: 12, justifyContent: 'center' }}>
+              <div style={{ marginTop: 32, display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a href="/" className="btn btn--big">Explore stories →</a>
                 <button className="btn btn--ghost" onClick={() => setStep(1)}>Give again</button>
               </div>
@@ -207,7 +208,7 @@ function IndividualTab() {
         </div>
 
         <aside>
-          <div style={{ position: 'sticky', top: 120, background: 'var(--mm-paper)', padding: 32, border: '1.5px solid #000' }}>
+          <div style={{ position: 'sticky', top: 160, background: 'var(--mm-paper)', padding: 32, border: '1.5px solid #000' }}>
             <div className="eyebrow" style={{ marginBottom: 14 }}>Your gift</div>
             {[['Amount', `£${amount}`], ['Frequency', freq]].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--mm-mid)' }}>
@@ -246,8 +247,8 @@ function Field({ label, type = 'text', required, value, onChange }: { label: str
 
 function InstitutionalTab() {
   return (
-    <section className="wrap" style={{ padding: '64px 48px 96px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 64 }}>
+    <section className="wrap sp">
+      <div className="layout-donation-grid">
         <div>
           <div className="eyebrow" style={{ color: 'var(--mm-blue)', marginBottom: 12 }}>For foundations &amp; trusts</div>
           <h2 className="h-section" style={{ margin: '0 0 24px' }}>Partner on something permanent.</h2>
@@ -265,12 +266,12 @@ function InstitutionalTab() {
               { tier: 'Supporter', range: '£5,000 – 25,000', perks: 'Recognised across digital & print · Supporter events', color: 'var(--mm-green)' },
             ].map((t) => (
               <details key={t.tier} style={{ border: '1.5px solid #000', padding: 20, background: '#fff' }}>
-                <summary style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', listStyle: 'none' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                    <span className="dot" style={{ background: t.color, width: 14, height: 14 }}/>
+                <summary style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', listStyle: 'none', gap: 12 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0 }}>
+                    <span className="dot" style={{ background: t.color, width: 14, height: 14, flexShrink: 0 }}/>
                     <span style={{ fontWeight: 700, fontSize: 18 }}>{t.tier}</span>
                   </span>
-                  <span style={{ fontWeight: 600, color: 'var(--mm-grey)' }}>{t.range}</span>
+                  <span style={{ fontWeight: 600, color: 'var(--mm-grey)', flexShrink: 0 }}>{t.range}</span>
                 </summary>
                 <p style={{ margin: '14px 0 0', color: 'var(--mm-grey)' }}>{t.perks}</p>
               </details>
@@ -308,7 +309,7 @@ function InstitutionalTab() {
 
 function CorporateTab() {
   return (
-    <section className="wrap" style={{ padding: '64px 48px 96px' }}>
+    <section className="wrap sp">
       <div className="eyebrow" style={{ color: 'var(--mm-orange)', marginBottom: 12 }}>For corporate partners</div>
       <h2 className="h-section" style={{ margin: '0 0 24px', maxWidth: 800 }}>
         Bring your people to the story of all of us.
@@ -317,7 +318,7 @@ function CorporateTab() {
         Corporate partnerships combine philanthropy, employee engagement and brand alignment with
         one of the UK&apos;s most relevant cultural stories.
       </p>
-      <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <div className="layout-3col" style={{ marginTop: 48 }}>
         {[
           { title: 'Sponsor a season', price: 'from £25,000', copy: 'Your name across an exhibition and its programme of events.', tone: 'cool' },
           { title: 'Employee away-day', price: 'from £3,500', copy: 'Private tour + co-production workshop for up to 40.', tone: 'yellow' },

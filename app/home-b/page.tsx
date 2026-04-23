@@ -32,7 +32,7 @@ export default function HomeB() {
 
       {/* ———— HERO ———— */}
       <section style={{ borderBottom: '1.5px solid #000', background: 'var(--mm-paper)' }}>
-        <div className="wrap" style={{ padding: '64px 48px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'stretch' }}>
+        <div className="wrap layout-hero-b" style={{ padding: '64px 48px 40px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <div style={{ display: 'flex', gap: 10, marginBottom: 22, flexWrap: 'wrap' }}>
@@ -60,8 +60,8 @@ export default function HomeB() {
             </div>
           </div>
 
-          {/* Video tile */}
-          <div style={{ position: 'relative', minHeight: 560, border: '1.5px solid #000', background: '#000', overflow: 'hidden' }}>
+          {/* Video tile — hidden on mobile */}
+          <div className="hero-video">
             <video src="/video/homepage.mp4" autoPlay muted loop playsInline
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}/>
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.55) 100%)', pointerEvents: 'none' }}/>
@@ -81,11 +81,11 @@ export default function HomeB() {
       <Marquee items={MARQUEE_ITEMS} bg="var(--mm-white)" color="var(--mm-black)" />
 
       {/* ———— FEATURED STORY ———— */}
-      <section id="featured" className="wrap" style={{ padding: '96px 48px 72px' }}>
+      <section id="featured" className="wrap sp">
         <div className="eyebrow" style={{ marginBottom: 16, color: 'var(--mm-blue)' }}>
           Featured story · 12 min read
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 48, alignItems: 'center' }}>
+        <div className="layout-featured">
           <div>
             <h2 style={{ fontSize: 'clamp(40px, 5.5vw, 80px)', lineHeight: 0.98, letterSpacing: '-0.025em', margin: 0, fontWeight: 700 }}>
               The day the <em style={{ fontStyle: 'italic', fontWeight: 500 }}>Empire Windrush</em> docked,
@@ -95,12 +95,13 @@ export default function HomeB() {
               Two arrivals, five days apart, in June 1948. Both shaped Britain more than almost
               anything that followed. A new feature, told with archive, oral histories, and music.
             </p>
-            <div style={{ marginTop: 28, display: 'flex', gap: 14, alignItems: 'center' }}>
+            <div style={{ marginTop: 28, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
               <a href="#" className="btn">Read the story →</a>
               <span style={{ fontSize: 14, color: 'var(--mm-grey)' }}>By Ayo Adeyemi · 14 Apr 2026</span>
             </div>
           </div>
-          <div style={{ position: 'relative', height: 520 }}>
+          {/* Photo collage — hidden on mobile */}
+          <div className="featured-collage">
             <PhotoTile label="Archive: Empire Windrush, 1948" tone="cool" className="angled"
               style={{ position: 'absolute', top: 0, left: 0, right: 60, height: 340, transform: 'rotate(-2deg)' }}/>
             <PhotoTile label="NHS founding staff" tone="green" className="cutout"
@@ -119,7 +120,7 @@ export default function HomeB() {
       {/* ———— THREE-STREAM GRID ———— */}
       <section style={{ background: '#fff', borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000' }}>
         <div className="wrap" style={{ padding: 0 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+          <div className="layout-stream-grid">
             {[
               { eyebrow: 'Stories', color: 'var(--mm-blue)', title: 'Voices',
                 lede: 'First-person oral histories from across Britain — food, faith, family, work.', tone: 'cool', label: 'Contributor portraits', link: 'All 47 stories' },
@@ -144,7 +145,7 @@ export default function HomeB() {
       </section>
 
       {/* ———— 2028 TIMELINE ———— */}
-      <section style={{ padding: '96px 0', background: 'var(--mm-paper)' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-paper)' }}>
         <div className="wrap">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 20 }}>
             <div>
@@ -156,7 +157,7 @@ export default function HomeB() {
             <Link href="/visit" className="btn">The new museum →</Link>
           </div>
 
-          <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, borderTop: '1.5px solid #000' }}>
+          <ol className="layout-timeline-ol">
             {[
               { year: '2020', title: 'Lewisham pop-up', copy: 'Our first long-run home welcomed 150,000 visitors.', dot: 'var(--mm-yellow)' },
               { year: '2025', title: '65 Crutched Friars secured', copy: 'A permanent home, confirmed in the City of London.', dot: 'var(--mm-orange)' },
@@ -185,8 +186,8 @@ export default function HomeB() {
       </section>
 
       {/* ———— INSTITUTIONAL FUNDERS ———— */}
-      <section style={{ background: '#fff', padding: '96px 0', borderBottom: '1.5px solid #000' }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64, alignItems: 'center' }}>
+      <section className="sp-v" style={{ background: '#fff', borderBottom: '1.5px solid #000' }}>
+        <div className="wrap layout-funders">
           <div>
             <div className="eyebrow" style={{ color: 'var(--mm-blue)', marginBottom: 14 }}>For foundations &amp; institutional funders</div>
             <h2 className="h-section" style={{ margin: 0 }}>
@@ -201,7 +202,7 @@ export default function HomeB() {
               <a href="mailto:rob@migrationmuseum.org" className="btn btn--ghost btn--big">Talk to us</a>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', border: '1.5px solid #000' }}>
+          <div className="layout-funder-grid">
             {[
               'Arts Council England', 'The Linbury Trust', 'City of London',
               'Paul Hamlyn Foundation', 'Esmée Fairbairn', 'Garfield Weston',
@@ -221,7 +222,7 @@ export default function HomeB() {
       </section>
 
       {/* ———— NEWSLETTER ———— */}
-      <section style={{ padding: '96px 0', background: 'var(--mm-orange)', color: '#fff', borderBottom: '1.5px solid #000', position: 'relative', overflow: 'hidden' }}>
+      <section className="sp-v" style={{ background: 'var(--mm-orange)', color: '#fff', borderBottom: '1.5px solid #000', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none' }}>
           <div style={{ position: 'absolute', top: 40, left: '8%' }}><RemixingM size={200} color="#000" interval={2200} seed={1}/></div>
           <div style={{ position: 'absolute', bottom: 40, right: '10%' }}><RemixingM size={240} color="#000" interval={2600} seed={6}/></div>
@@ -244,13 +245,13 @@ function NewsletterForm() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   return (
-    <form style={{ marginTop: 28, display: 'flex', gap: 8, maxWidth: 520, margin: '28px auto 0' }}
+    <form style={{ marginTop: 28, display: 'flex', gap: 8, flexWrap: 'wrap', maxWidth: 520, margin: '28px auto 0', justifyContent: 'center' }}
       onSubmit={(e) => { e.preventDefault(); setSent(true) }}>
       {!sent ? (
         <>
           <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            style={{ flex: 1, padding: '16px 20px', background: '#fff', border: '1.5px solid #000', borderRadius: 999, color: '#000', fontSize: 16, fontFamily: 'inherit' }}
+            style={{ flex: 1, minWidth: 200, padding: '16px 20px', background: '#fff', border: '1.5px solid #000', borderRadius: 999, color: '#000', fontSize: 16, fontFamily: 'inherit' }}
           />
           <button type="submit" className="btn btn--big" style={{ background: '#000', color: '#fff' }}>Subscribe</button>
         </>

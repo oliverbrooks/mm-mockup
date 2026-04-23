@@ -261,3 +261,183 @@ html { scroll-behavior: smooth; }
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* ============================================
+   RESPONSIVE LAYOUT HELPERS
+   ============================================ */
+
+/* Section vertical padding (horizontal from .wrap) */
+.sp   { padding-top: 96px; padding-bottom: 96px; }
+.sp-v { padding-top: 96px; padding-bottom: 96px; }
+
+/* Homepage grid layouts */
+.layout-hero      { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+.layout-2col      { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.layout-stories-a { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+.layout-stories-b { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 24px; margin-top: 24px; }
+.layout-3col      { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.layout-quote     { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: start; }
+.layout-cta-inner { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: center; }
+
+/* Footer grid */
+.layout-footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 60px; }
+
+/* Hero collage: absolutely-positioned tiles */
+.hero-collage  { position: relative; height: 560px; }
+
+/* 2028 block image */
+.block-2028-img { position: relative; height: 500px; }
+
+/* Mobile nav trigger (hidden by default) */
+.nav__hamburger { display: none; }
+.nav__mobile-menu {
+  background: var(--mm-white);
+  border-bottom: 1.5px solid var(--mm-black);
+}
+.nav__mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px 20px;
+}
+.nav__mobile-menu .nav__link {
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 14px 16px;
+}
+
+/* About page */
+.layout-how-we-work { display: grid; grid-template-columns: 1fr 1.3fr; gap: 64px; }
+.layout-stats       { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1.5px solid #000; }
+.layout-4col        { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+/* Support page */
+.support-tabs          { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.layout-donation-grid  { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
+
+/* Visit page */
+.layout-inside-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.layout-floor-card      { display: grid; grid-template-columns: 1fr 1fr; min-height: 260px; border: 1.5px solid #000; background: #fff; }
+.layout-access          { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; }
+.layout-access-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.visit-hero-img         { height: 560px; width: 100%; object-fit: cover; display: block; border: 1.5px solid #000; }
+
+/* Exhibition page */
+.layout-exhibition-img  { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 280px; gap: 16px; }
+.layout-exhibition-info { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
+.layout-contributors    { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+
+/* Home B page */
+.layout-hero-b          { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; }
+.hero-video             { position: relative; min-height: 560px; border: 1.5px solid #000; background: #000; overflow: hidden; }
+.layout-featured        { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+.featured-collage       { position: relative; height: 520px; }
+.layout-stream-grid     { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.layout-timeline-ol     { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1.5px solid #000; }
+.layout-funders         { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: center; }
+.layout-funder-grid     { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid #000; }
+
+/* ---- Tablet (≤ 960px) ---- */
+@media (max-width: 960px) {
+  .layout-stories-a { grid-template-columns: 1fr 1fr; }
+  .layout-stories-b { grid-template-columns: 1fr 1fr; }
+  .layout-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .layout-4col  { grid-template-columns: 1fr 1fr; }
+  .layout-stats { grid-template-columns: 1fr 1fr; }
+  /* Fix stat borders at 2-col */
+  .layout-stats > div:nth-child(odd)  { border-right: 1.5px solid #000 !important; }
+  .layout-stats > div:nth-child(even) { border-right: none !important; }
+  /* Visit */
+  .layout-inside-grid { grid-template-columns: 1fr; }
+  /* Home B */
+  .layout-timeline-ol { grid-template-columns: 1fr 1fr; }
+  .layout-timeline-ol > li:nth-child(odd)  { border-right: 1.5px solid #000 !important; }
+  .layout-timeline-ol > li:nth-child(even) { border-right: none !important; }
+  .layout-funders { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ---- Mobile (≤ 768px) ---- */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav__links    { display: none; }
+  .nav__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    padding: 4px 10px;
+    background: none;
+    border: 1.5px solid var(--mm-black);
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1;
+    height: 40px;
+    width: 44px;
+  }
+
+  /* Section padding */
+  .sp   { padding-top: 56px; padding-bottom: 56px; }
+  .sp-v { padding-top: 56px; padding-bottom: 56px; }
+
+  /* Grids → single column */
+  .layout-hero      { grid-template-columns: 1fr; }
+  .hero-collage     { display: none; }
+  .layout-2col      { grid-template-columns: 1fr; gap: 40px; }
+  .layout-stories-a { grid-template-columns: 1fr; }
+  .layout-stories-b { grid-template-columns: 1fr; }
+  .layout-3col      { grid-template-columns: 1fr; }
+  .layout-quote     { grid-template-columns: 1fr; gap: 40px; }
+  .layout-cta-inner { grid-template-columns: 1fr; }
+  .block-2028-img   { display: none; }
+  .layout-footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  .layout-footer-social { flex-wrap: wrap; gap: 12px !important; }
+
+  /* CTA block inner padding */
+  .layout-cta-inner { padding: 40px 24px !important; }
+
+  /* Countdown: smaller on mobile */
+  .countdown-item-value { font-size: 36px !important; }
+
+  /* About page */
+  .layout-how-we-work { grid-template-columns: 1fr; gap: 40px; }
+  .layout-4col  { grid-template-columns: 1fr 1fr; }
+  .layout-stats { grid-template-columns: 1fr 1fr; }
+  .layout-stats > div:nth-child(odd)  { border-right: 1.5px solid #000 !important; }
+  .layout-stats > div:nth-child(even) { border-right: none !important; }
+
+  /* Support page — stack tabs vertically */
+  .support-tabs { grid-template-columns: 1fr; }
+  .support-tabs button { border-left: none !important; border-top: 1px solid var(--mm-mid); }
+  .support-tabs button:first-child { border-top: none; }
+
+  /* Donation grid — form full-width, aside below */
+  .layout-donation-grid { grid-template-columns: 1fr; }
+  .layout-donation-grid aside > div { position: static !important; }
+
+  /* Visit page */
+  .visit-hero-img    { height: 240px; }
+  .layout-floor-card { grid-template-columns: 1fr; }
+  .layout-access     { grid-template-columns: 1fr; gap: 40px; }
+
+  /* Exhibition page */
+  .layout-exhibition-img { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px 200px; }
+  .layout-exhibition-img > *:first-child { grid-row: auto !important; }
+  .layout-exhibition-info { grid-template-columns: 1fr; }
+  .layout-contributors  { grid-template-columns: repeat(3, 1fr); }
+
+  /* Home B page */
+  .layout-hero-b    { grid-template-columns: 1fr; }
+  .hero-video       { display: none; }
+  .layout-featured  { grid-template-columns: 1fr; }
+  .featured-collage { display: none; }
+  .layout-stream-grid { grid-template-columns: 1fr; }
+  .layout-stream-grid > div { border-right: none !important; border-top: 1.5px solid #000; }
+  .layout-stream-grid > div:first-child { border-top: none; }
+}
+
+/* ---- Small mobile (≤ 480px) ---- */
+@media (max-width: 480px) {
+  .btn--big { padding: 16px 22px; font-size: 16px; }
+  .layout-contributors { grid-template-columns: repeat(2, 1fr); }
+}

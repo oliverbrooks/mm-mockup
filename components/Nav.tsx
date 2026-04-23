@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { Wordmark } from './Logo'
 
@@ -13,12 +14,16 @@ const NAV_LINKS = [
 ]
 
 export function Nav({ active = '' }: { active?: string }) {
+  const [open, setOpen] = useState(false)
+
   return (
     <header className="nav">
       <div className="wrap nav__inner">
         <Link href="/" aria-label="Migration Museum — home" style={{ display: 'flex', alignItems: 'center' }}>
           <Wordmark size={13} />
         </Link>
+
+        {/* Desktop nav */}
         <nav className="nav__links" aria-label="Primary">
           {NAV_LINKS.map((l) => (
             <Link
@@ -33,7 +38,43 @@ export function Nav({ active = '' }: { active?: string }) {
             Donate
           </Link>
         </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          className="nav__hamburger"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+        >
+          {open ? '×' : '≡'}
+        </button>
       </div>
+
+      {/* Mobile slide-down menu */}
+      {open && (
+        <div className="nav__mobile-menu">
+          <nav aria-label="Mobile navigation">
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                className={`nav__link ${active === l.label ? 'active' : ''}`}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Link
+              href="/support"
+              className="btn"
+              style={{ marginTop: 12, justifyContent: 'center' }}
+              onClick={() => setOpen(false)}
+            >
+              Donate
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

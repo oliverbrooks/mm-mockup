@@ -1,4 +1,7 @@
 import React from 'react'
+import Image from 'next/image'
+import type { SanityImageSource } from '@sanity/image-url'
+import { urlFor } from '@/sanity/lib/image'
 
 const GRADS: Record<string, string> = {
   warm: 'linear-gradient(135deg, #F4A261 0%, #E76F51 40%, #9A3B28 100%)',
@@ -17,22 +20,63 @@ interface PhotoTileProps {
   style?: React.CSSProperties
   className?: string
   children?: React.ReactNode
+  image?: SanityImageSource | null
+  imageAlt?: string
+  imageSizes?: string
+  imageWidth?: number
+  imageHeight?: number
+  priority?: boolean
 }
 
-export function PhotoTile({ label = 'Photo', tone = 'warm', style = {}, className = '', children }: PhotoTileProps) {
+function getTileImageUrl(image: SanityImageSource | null | undefined, width: number, height: number) {
+  if (!image) return null
+  try {
+    return urlFor(image).width(width).height(height).fit('crop').auto('format').url()
+  } catch {
+    return null
+  }
+}
+
+export function PhotoTile({
+  label = 'Photo',
+  tone = 'warm',
+  style = {},
+  className = '',
+  children,
+  image = null,
+  imageAlt,
+  imageSizes = '100vw',
+  imageWidth = 1200,
+  imageHeight = 900,
+  priority = false,
+}: PhotoTileProps) {
+  const imageUrl = getTileImageUrl(image, imageWidth, imageHeight)
+
   return (
     <div
       className={`ph ${className}`}
       style={{ background: GRADS[tone] ?? GRADS.warm, position: 'relative', overflow: 'hidden', ...style }}
     >
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={imageAlt ?? label}
+          fill
+          sizes={imageSizes}
+          priority={priority}
+          style={{ objectFit: 'cover' }}
+        />
+      )}
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 50%)',
+        backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.16) 0%, transparent 50%)',
         mixBlendMode: 'overlay', pointerEvents: 'none',
       }}/>
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: 'repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,0.04) 4px 5px)',
+        backgroundImage: imageUrl
+          ? 'repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,0.025) 6px 7px)'
+          : 'repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,0.04) 4px 5px)',
         pointerEvents: 'none',
       }}/>
       {children}

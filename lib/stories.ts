@@ -1,3 +1,5 @@
+import type { SanityImageSource } from '@sanity/image-url'
+
 export type StoryFormat = 'Oral history' | 'Feature' | 'Food story' | 'Youth voices' | 'Exhibition'
 
 export interface Story {
@@ -14,6 +16,10 @@ export interface Story {
   lede: string
   body: string[]
   object: { label: string; caption: string }
+  contributorImage?: SanityImageSource
+  objectImage?: SanityImageSource
+  objectLabel?: string
+  objectCaption?: string
   bio: string
 }
 

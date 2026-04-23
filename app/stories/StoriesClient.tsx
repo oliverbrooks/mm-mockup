@@ -16,7 +16,6 @@ export function StoriesClient({ stories }: { stories: Story[] }) {
 
   const featured = activeFormat === 'All' ? stories[0] : null
   const grid = activeFormat === 'All' ? stories.slice(1) : filtered
-  console.log({featured})
   return (
     <div style={{ background: '#fff', color: '#000' }}>
       <Nav active="Stories" />
@@ -52,6 +51,11 @@ export function StoriesClient({ stories }: { stories: Story[] }) {
                 <PhotoTile
                   tone={featured.tone}
                   label={featured.contributor}
+                  image={featured.contributorImage}
+                  imageAlt={`${featured.contributor} portrait`}
+                  imageSizes="(max-width: 980px) 100vw, 50vw"
+                  imageWidth={1200}
+                  imageHeight={900}
                   style={{ aspectRatio: '4/3' }}
                   className="angled"
                 />
@@ -159,10 +163,15 @@ export function StoriesClient({ stories }: { stories: Story[] }) {
 
 function StoryCard({ story }: { story: Story }) {
   return (
-    <Link href={`/stories/${story.slug}`} style={{ display: 'block' }}>
+    <Link href={`/stories/${story.slug.current}`} style={{ display: 'block' }}>
       <PhotoTile
         tone={story.tone}
         label={story.contributor}
+        image={story.contributorImage}
+        imageAlt={`${story.contributor} portrait`}
+        imageSizes="(max-width: 900px) 100vw, (max-width: 1300px) 50vw, 33vw"
+        imageWidth={900}
+        imageHeight={720}
         style={{ aspectRatio: '5/4', marginBottom: 16 }}
         className="angled"
       />

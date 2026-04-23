@@ -47,3 +47,29 @@ export const storyBySlugQuery = groq`
 export const allStorySlugQuery = groq`
   *[_type == "story"] { "slug": slug.current }
 `
+
+export const currentExhibitionQuery = groq`
+  *[_type == "exhibition" && status == "Current"] | order(_updatedAt desc) [0] {
+    slug,
+    title,
+    lede,
+    status,
+    isFree,
+    ticketUrl,
+    openingDate,
+    closingDate,
+    location,
+    accentColour,
+    body,
+    images,
+    accessInfo,
+    contributors,
+    "featuredEvent": featuredEvent-> {
+      title,
+      date,
+      price,
+      isFree,
+      bookingUrl,
+    },
+  }
+`

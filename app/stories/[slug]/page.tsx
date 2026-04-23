@@ -1,41 +1,32 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { PhotoTile } from '@/components/PhotoTile'
 import { AccentBar } from '@/components/AccentBar'
 import { STORIES } from '@/lib/stories'
 import { client } from '@/sanity/lib/client'
-import { urlFor } from '@/sanity/lib/image'
 import { storyBySlugQuery, allStorySlugQuery } from '@/sanity/lib/queries'
 
 export const revalidate = 3600
 
-function sanityImageUrl(image: unknown, width: number, height: number) {
-  if (!image || !client) return null
-  try {
-    return urlFor(image).width(width).height(height).fit('crop').auto('format').url()
-  } catch {
-    return null
-  }
-}
-
 export async function generateStaticParams() {
   if (client) {
     try {
-      const slugs: { slug: string }[] = await client.fetch(allStorySlugQuery)
-      return slugs.map((s) => ({ slug: s.slug }))
+      const slugs: { slug: string | { current?: string } }[] = await client.fetch(allStorySlugQuery)
+      return slugs
+        .map((s) => (typeof s.slug === 'string' ? s.slug : s.slug?.current))
+        .filter((slug): slug is string => Boolean(slug))
+        .map((slug) => ({ slug }))
     } catch {}
   }
-  return STORIES.map((s) => ({ slug: s.slug }))
+  return STORIES.map((s) => ({ slug: s.slug.current }))
 }
 
 async function getStory(slug: string) {
   if (client) {
     try {
       const story = await client.fetch(storyBySlugQuery, { slug }, { next: { tags: ['stories'] } })
-      console.log({story})
       if (story) return story
     } catch {}
   }
@@ -71,34 +62,23 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
         )
     : []
 
-  const contributorHeroImageUrl = sanityImageUrl(story.contributorImage, 1400, 980)
-  const contributorPortraitImageUrl = sanityImageUrl(story.contributorImage, 600, 600)
-  const objectImageUrl = sanityImageUrl(story.objectImage, 960, 720)
-
   return (
     <div style={{ background: '#fff', color: '#000' }}>
       <Nav active="Stories" />
 
       {/* HERO */}
       <section className="layout-story-hero" style={{ borderBottom: '1.5px solid #000' }}>
-        {contributorHeroImageUrl ? (
-          <div style={{ position: 'relative', minHeight: 480 }}>
-            <Image
-              src={contributorHeroImageUrl}
-              alt={`${story.contributor} portrait`}
-              fill
-              sizes="(max-width: 900px) 100vw, 50vw"
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-          </div>
-        ) : (
-          <PhotoTile
-            tone={story.tone}
-            label={story.contributor}
-            style={{ minHeight: 480 }}
-          />
-        )}
+        <PhotoTile
+          tone={story.tone}
+          label={story.contributor}
+          image={story.contributorImage}
+          imageAlt={`${story.contributor} portrait`}
+          imageSizes="(max-width: 900px) 100vw, 50vw"
+          imageWidth={1400}
+          imageHeight={980}
+          priority
+          style={{ minHeight: 480 }}
+        />
         <div style={{
           background: 'var(--mm-paper)',
           padding: '56px 48px',
@@ -202,24 +182,17 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             <div style={{ position: 'sticky', top: 120, display: 'flex', flexDirection: 'column', gap: 24 }}>
               <div style={{ border: '1.5px solid #000', padding: 28, background: 'var(--mm-paper)' }}>
                 <div className="eyebrow" style={{ marginBottom: 16 }}>Contributor</div>
-                {contributorPortraitImageUrl ? (
-                  <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: '50%', overflow: 'hidden', marginBottom: 16 }}>
-                    <Image
-                      src={contributorPortraitImageUrl}
-                      alt={`${story.contributor} portrait`}
-                      fill
-                      sizes="(max-width: 1100px) 45vw, 280px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                ) : (
-                  <PhotoTile
-                    tone={story.tone}
-                    label={story.contributor}
-                    style={{ aspectRatio: '1/1', borderRadius: '50%', marginBottom: 16 }}
-                    className="cutout"
-                  />
-                )}
+                <PhotoTile
+                  tone={story.tone}
+                  label={story.contributor}
+                  image={story.contributorImage}
+                  imageAlt={`${story.contributor} portrait`}
+                  imageSizes="(max-width: 1100px) 45vw, 280px"
+                  imageWidth={600}
+                  imageHeight={600}
+                  style={{ aspectRatio: '1/1', borderRadius: '50%', marginBottom: 16 }}
+                  className="cutout"
+                />
                 <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 4 }}>{story.contributor}</div>
                 <div style={{ fontSize: 13, color: 'var(--mm-grey)', marginBottom: 16 }}>{story.role}</div>
                 <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--mm-grey)' }}>{story.bio}</p>
@@ -227,24 +200,17 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
 
               <div style={{ border: '1.5px solid #000', padding: 28 }}>
                 <div className="eyebrow" style={{ marginBottom: 16 }}>Their object</div>
-                {objectImageUrl ? (
-                  <div style={{ position: 'relative', aspectRatio: '4/3', marginBottom: 16 }}>
-                    <Image
-                      src={objectImageUrl}
-                      alt={story.objectLabel ?? story.object?.label ?? `${story.contributor}'s object`}
-                      fill
-                      sizes="(max-width: 1100px) 90vw, 360px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                ) : (
-                  <PhotoTile
-                    tone={story.tone}
-                    label={story.objectLabel ?? story.object?.label}
-                    style={{ aspectRatio: '4/3', marginBottom: 16 }}
-                    className="torn"
-                  />
-                )}
+                <PhotoTile
+                  tone={story.tone}
+                  label={story.objectLabel ?? story.object?.label}
+                  image={story.objectImage}
+                  imageAlt={story.objectLabel ?? story.object?.label ?? `${story.contributor}'s object`}
+                  imageSizes="(max-width: 1100px) 90vw, 360px"
+                  imageWidth={960}
+                  imageHeight={720}
+                  style={{ aspectRatio: '4/3', marginBottom: 16 }}
+                  className="torn"
+                />
                 <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8 }}>{story.objectLabel ?? story.object?.label}</div>
                 <p style={{ margin: 0, fontSize: 13, color: 'var(--mm-grey)', lineHeight: 1.6 }}>
                   {story.objectCaption ?? story.object?.caption}

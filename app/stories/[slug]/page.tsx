@@ -1,21 +1,79 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { PhotoTile } from '@/components/PhotoTile'
 import { AccentBar } from '@/components/AccentBar'
 import { STORIES } from '@/lib/stories'
+import { client } from '@/sanity/lib/client'
+import { urlFor } from '@/sanity/lib/image'
+import { storyBySlugQuery, allStorySlugQuery } from '@/sanity/lib/queries'
 
-export function generateStaticParams() {
+export const revalidate = 3600
+
+function sanityImageUrl(image: unknown, width: number, height: number) {
+  if (!image || !client) return null
+  try {
+    return urlFor(image).width(width).height(height).fit('crop').auto('format').url()
+  } catch {
+    return null
+  }
+}
+
+export async function generateStaticParams() {
+  if (client) {
+    try {
+      const slugs: { slug: string }[] = await client.fetch(allStorySlugQuery)
+      return slugs.map((s) => ({ slug: s.slug }))
+    } catch {}
+  }
   return STORIES.map((s) => ({ slug: s.slug }))
+}
+
+async function getStory(slug: string) {
+  if (client) {
+    try {
+      const story = await client.fetch(storyBySlugQuery, { slug }, { next: { tags: ['stories'] } })
+      console.log({story})
+      if (story) return story
+    } catch {}
+  }
+  return STORIES.find((s) => s.slug.current === slug) ?? null
+}
+
+async function getRelated(slug: string) {
+  if (client) {
+    try {
+      const all = await client.fetch(
+        `*[_type == "story" && slug.current != $slug] | order(publishedAt desc)[0..2] { slug, title, contributor, role, format, era, readingTime, tone, lede }`,
+        { slug },
+        { next: { tags: ['stories'] } }
+      )
+      return all
+    } catch {}
+  }
+  return STORIES.filter((s) => s.slug.current !== slug).slice(0, 3)
 }
 
 export default async function StoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const story = STORIES.find((s) => s.slug === slug)
+  const [story, related] = await Promise.all([getStory(slug), getRelated(slug)])
+
   if (!story) notFound()
 
-  const related = STORIES.filter((s) => s.slug !== slug).slice(0, 3)
+  // body may be Portable Text blocks (Sanity) or plain string array (static)
+  const bodyParagraphs: string[] = Array.isArray(story.body)
+    ? story.body.every((b: unknown) => typeof b === 'string')
+      ? story.body
+      : story.body.map((block: { children?: { text: string }[] }) =>
+          block.children?.map((c) => c.text).join('') ?? ''
+        )
+    : []
+
+  const contributorHeroImageUrl = sanityImageUrl(story.contributorImage, 1400, 980)
+  const contributorPortraitImageUrl = sanityImageUrl(story.contributorImage, 600, 600)
+  const objectImageUrl = sanityImageUrl(story.objectImage, 960, 720)
 
   return (
     <div style={{ background: '#fff', color: '#000' }}>
@@ -23,11 +81,24 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
 
       {/* HERO */}
       <section className="layout-story-hero" style={{ borderBottom: '1.5px solid #000' }}>
-        <PhotoTile
-          tone={story.tone}
-          label={story.contributor}
-          style={{ minHeight: 480 }}
-        />
+        {contributorHeroImageUrl ? (
+          <div style={{ position: 'relative', minHeight: 480 }}>
+            <Image
+              src={contributorHeroImageUrl}
+              alt={`${story.contributor} portrait`}
+              fill
+              sizes="(max-width: 900px) 100vw, 50vw"
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+          </div>
+        ) : (
+          <PhotoTile
+            tone={story.tone}
+            label={story.contributor}
+            style={{ minHeight: 480 }}
+          />
+        )}
         <div style={{
           background: 'var(--mm-paper)',
           padding: '56px 48px',
@@ -36,7 +107,6 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
           justifyContent: 'space-between',
           gap: 32,
         }}>
-          {/* Breadcrumb */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, flexWrap: 'wrap' }}>
             <Link href="/" style={{ opacity: 0.6 }}>Home</Link>
             <span style={{ opacity: 0.4 }}>/</span>
@@ -45,7 +115,6 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             <span>{story.contributor}</span>
           </div>
 
-          {/* Format + era chips */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <span className="chip" style={{ background: 'var(--mm-black)', color: '#fff', borderColor: '#000' }}>
               {story.format}
@@ -54,7 +123,6 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             <span className="chip" style={{ borderColor: 'var(--mm-mid)' }}>{story.readingTime}</span>
           </div>
 
-          {/* Title */}
           <h1 style={{
             margin: 0,
             fontSize: 'clamp(28px, 4vw, 52px)',
@@ -65,7 +133,6 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             {story.title}
           </h1>
 
-          {/* Contributor + lede */}
           <div>
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12 }}>
               {story.contributor}{' '}
@@ -81,12 +148,10 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
       {/* BODY + SIDEBAR */}
       <section className="wrap sp">
         <div className="layout-story">
-
-          {/* Article content */}
           <article>
             <AccentBar />
             <div style={{ marginTop: 32 }} className="prose">
-              {story.body.map((para, i) => (
+              {bodyParagraphs.map((para, i) => (
                 <div key={i}>
                   <p style={{ fontSize: 19, lineHeight: 1.7, margin: '0 0 24px', color: i === 0 ? '#000' : 'var(--mm-grey)' }}>
                     {para}
@@ -109,7 +174,6 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
               ))}
             </div>
 
-            {/* Audio placeholder (for oral history / feature formats) */}
             {(story.format === 'Oral history' || story.format === 'Feature') && (
               <div style={{
                 marginTop: 48,
@@ -134,40 +198,59 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             )}
           </article>
 
-          {/* Sidebar */}
           <aside>
             <div style={{ position: 'sticky', top: 120, display: 'flex', flexDirection: 'column', gap: 24 }}>
-
-              {/* Contributor card */}
               <div style={{ border: '1.5px solid #000', padding: 28, background: 'var(--mm-paper)' }}>
                 <div className="eyebrow" style={{ marginBottom: 16 }}>Contributor</div>
-                <PhotoTile
-                  tone={story.tone}
-                  label={story.contributor}
-                  style={{ aspectRatio: '1/1', borderRadius: '50%', marginBottom: 16 }}
-                  className="cutout"
-                />
+                {contributorPortraitImageUrl ? (
+                  <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: '50%', overflow: 'hidden', marginBottom: 16 }}>
+                    <Image
+                      src={contributorPortraitImageUrl}
+                      alt={`${story.contributor} portrait`}
+                      fill
+                      sizes="(max-width: 1100px) 45vw, 280px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
+                ) : (
+                  <PhotoTile
+                    tone={story.tone}
+                    label={story.contributor}
+                    style={{ aspectRatio: '1/1', borderRadius: '50%', marginBottom: 16 }}
+                    className="cutout"
+                  />
+                )}
                 <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 4 }}>{story.contributor}</div>
                 <div style={{ fontSize: 13, color: 'var(--mm-grey)', marginBottom: 16 }}>{story.role}</div>
                 <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--mm-grey)' }}>{story.bio}</p>
               </div>
 
-              {/* Object card */}
               <div style={{ border: '1.5px solid #000', padding: 28 }}>
                 <div className="eyebrow" style={{ marginBottom: 16 }}>Their object</div>
-                <PhotoTile
-                  tone={story.tone}
-                  label={story.object.label}
-                  style={{ aspectRatio: '4/3', marginBottom: 16 }}
-                  className="torn"
-                />
-                <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8 }}>{story.object.label}</div>
+                {objectImageUrl ? (
+                  <div style={{ position: 'relative', aspectRatio: '4/3', marginBottom: 16 }}>
+                    <Image
+                      src={objectImageUrl}
+                      alt={story.objectLabel ?? story.object?.label ?? `${story.contributor}'s object`}
+                      fill
+                      sizes="(max-width: 1100px) 90vw, 360px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
+                ) : (
+                  <PhotoTile
+                    tone={story.tone}
+                    label={story.objectLabel ?? story.object?.label}
+                    style={{ aspectRatio: '4/3', marginBottom: 16 }}
+                    className="torn"
+                  />
+                )}
+                <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8 }}>{story.objectLabel ?? story.object?.label}</div>
                 <p style={{ margin: 0, fontSize: 13, color: 'var(--mm-grey)', lineHeight: 1.6 }}>
-                  {story.object.caption}
+                  {story.objectCaption ?? story.object?.caption}
                 </p>
               </div>
 
-              {/* Share */}
               <div style={{ padding: '20px 28px', border: '1.5px solid var(--mm-mid)' }}>
                 <div className="eyebrow" style={{ marginBottom: 12, color: 'var(--mm-grey)' }}>Share this story</div>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -192,23 +275,26 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
             <Link href="/stories" className="btn btn--ghost">All stories →</Link>
           </div>
           <div className="layout-3col">
-            {related.map((s) => (
-              <Link key={s.slug} href={`/stories/${s.slug}`} style={{ display: 'block' }}>
-                <PhotoTile
-                  tone={s.tone}
-                  label={s.contributor}
-                  style={{ aspectRatio: '4/3', marginBottom: 14 }}
-                  className="angled"
-                />
-                <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
-                  <span className="chip" style={{ fontSize: 12, padding: '4px 10px' }}>{s.format}</span>
-                </div>
-                <h3 style={{ margin: '0 0 6px', fontSize: 20, fontWeight: 700, lineHeight: 1.2, letterSpacing: '-0.01em' }}>
-                  {s.title}
-                </h3>
-                <div className="meta" style={{ color: 'var(--mm-grey)' }}>{s.contributor} · {s.readingTime}</div>
-              </Link>
-            ))}
+            {related.map((s: { slug: string | { current: string }; tone: string; contributor: string; format: string; title: string; readingTime: string }) => {
+              const relSlug = typeof s.slug === 'string' ? s.slug : s.slug?.current
+              return (
+                <Link key={relSlug} href={`/stories/${relSlug}`} style={{ display: 'block' }}>
+                  <PhotoTile
+                    tone={s.tone}
+                    label={s.contributor}
+                    style={{ aspectRatio: '4/3', marginBottom: 14 }}
+                    className="angled"
+                  />
+                  <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+                    <span className="chip" style={{ fontSize: 12, padding: '4px 10px' }}>{s.format}</span>
+                  </div>
+                  <h3 style={{ margin: '0 0 6px', fontSize: 20, fontWeight: 700, lineHeight: 1.2, letterSpacing: '-0.01em' }}>
+                    {s.title}
+                  </h3>
+                  <div className="meta" style={{ color: 'var(--mm-grey)' }}>{s.contributor} · {s.readingTime}</div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>

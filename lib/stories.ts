@@ -1,7 +1,7 @@
 export type StoryFormat = 'Oral history' | 'Feature' | 'Food story' | 'Youth voices' | 'Exhibition'
 
 export interface Story {
-  slug: string
+  slug: { current: string }
   title: string
   contributor: string
   role: string
@@ -19,31 +19,7 @@ export interface Story {
 
 export const STORIES: Story[] = [
   {
-    slug: 'this-dress-is-about-taking-up-space',
-    title: '"This dress is about taking up space."',
-    contributor: 'Karen Arthur',
-    role: 'Fashion designer & contributor',
-    format: 'Oral history',
-    theme: 'Identity',
-    era: 'Today',
-    readingTime: '9 min',
-    tone: 'red',
-    pullQuote: "It's like the older you get as a Black woman, the quieter you're supposed to become. This dress is about taking up space.",
-    lede: 'Karen Arthur on fashion, ageing, visibility — and making clothes that refuse to be silent.',
-    body: [
-      "I started making clothes when I was seven years old. My mother taught me to sew and I never stopped. But the clothes I made then were for blending in. For making yourself small enough to fit. It took me until my fifties to realise I didn't want to blend in anymore.",
-      "When I began designing for myself — really for myself, not for a market or a client — everything changed. I wanted volume. I wanted colour. I wanted people to have to step around me on the pavement.",
-      "My grandmother came here from Barbados in 1955. She wore a hat every single day. I didn't understand it as a child — I thought it was just old-fashioned. Now I understand completely. The hat was armour. It was her way of saying: I am a person of consequence. You will see me.",
-      "This dress is that hat. It's about the right to take up space — physical, visual, social space. It's about refusing to disappear.",
-    ],
-    object: {
-      label: "Karen Arthur's red dress, 2022",
-      caption: 'Silk dupion, self-designed and made. Worn at the opening of the All Our Stories exhibition, Lewisham, 2022.',
-    },
-    bio: 'Karen Arthur is a British-Barbadian fashion designer and textile artist based in South London. Her work explores Black womanhood, inheritance, and the politics of visibility. She has exhibited at Tate Modern and the V&A.',
-  },
-  {
-    slug: 'windrush-nhs',
+    slug: { current: 'windrush-nhs' },
     title: 'The day the Empire Windrush docked, and the NHS began.',
     contributor: 'Ayo Adeyemi',
     role: 'Writer & researcher',
@@ -67,7 +43,7 @@ export const STORIES: Story[] = [
     bio: 'Ayo Adeyemi is a journalist and historian specialising in the African diaspora and post-war British history. His long-form features have appeared in the Guardian, the Observer, and Delayed Gratification.',
   },
   {
-    slug: 'routes-ugandan-asians',
+    slug: { current: 'routes-ugandan-asians' },
     title: 'Routes: the Ugandan Asians.',
     contributor: 'The Kaur family',
     role: 'Community contributors',
@@ -90,8 +66,8 @@ export const STORIES: Story[] = [
     },
     bio: "The Kaur family — Harpreet, Parminder, and Simran — are long-standing members of the Migration Museum's Migration Network. Harpreet has contributed her testimony to three exhibitions since 2018.",
   },
-  {
-    slug: 'how-curry-became-british',
+  { 
+    slug: { current: 'how-curry-became-british' },
     title: 'How curry became British.',
     contributor: 'Priya Singh',
     role: 'Food writer & contributor',
@@ -115,7 +91,7 @@ export const STORIES: Story[] = [
     bio: "Priya Singh is a food writer and cultural historian. Her book 'The Other Menu' (2023) traces the history of South Asian restaurants in Britain. She contributes regularly to the BBC Food programme and the Financial Times Weekend.",
   },
   {
-    slug: 'young-people-rewriting-the-map',
+    slug: { current: 'young-people-rewriting-the-map' },
     title: 'Young people, rewriting the map.',
     contributor: 'Hackney students, 2024',
     role: 'Youth contributors',
@@ -139,7 +115,7 @@ export const STORIES: Story[] = [
     bio: "This project was co-produced with Year 10 and Year 11 students at Stoke Newington School, Hackney, in partnership with the Migration Museum's learning team. The students chose their own pseudonyms.",
   },
   {
-    slug: 'who-runs-the-world',
+    slug: { current: 'who-runs-the-world' } ,
     title: "Who Runs the World? Inside our pop-up festival.",
     contributor: 'Migration Museum',
     role: 'Exhibition spotlight',

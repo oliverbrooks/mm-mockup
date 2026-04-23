@@ -53,15 +53,6 @@ export function HomePageClient({ stories }: { stories: HomeStory[] }) {
     <div style={{ background: 'var(--mm-white)', color: 'var(--mm-black)' }}>
       <Nav active="" />
 
-      <div style={{
-        background: 'var(--mm-paper)', borderBottom: '1px solid var(--mm-mid)',
-        padding: '8px 0', fontSize: 12, textAlign: 'center',
-      }}>
-        <span style={{ color: 'var(--mm-grey)', marginRight: 12 }}>Homepage variant:</span>
-        <strong style={{ marginRight: 12 }}>A · Editorial Collage</strong>
-        <Link href="/home-b" style={{ color: 'var(--mm-blue)', textDecoration: 'underline' }}>Switch to B · Stories in Motion →</Link>
-      </div>
-
       <section style={{ position: 'relative', borderBottom: '1.5px solid #000', overflow: 'hidden' }}>
         <div className="wrap" style={{ padding: '48px 48px 72px', position: 'relative' }}>
           <div className="layout-hero">

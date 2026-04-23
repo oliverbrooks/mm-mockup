@@ -313,7 +313,13 @@ html { scroll-behavior: smooth; }
 .layout-4col        { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 
 /* Support page */
-.support-tabs          { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.support-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.support-tab__btn {
+  padding: 20px 24px;
+}
+.support-tab__label--short {
+  display: none;
+}
 .layout-donation-grid  { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
 
 /* Stories pages */
@@ -411,10 +417,16 @@ html { scroll-behavior: smooth; }
   .layout-stats > div:nth-child(odd)  { border-right: 1.5px solid #000 !important; }
   .layout-stats > div:nth-child(even) { border-right: none !important; }
 
-  /* Support page — stack tabs vertically */
-  .support-tabs { grid-template-columns: 1fr; }
-  .support-tabs button { border-left: none !important; border-top: 1px solid var(--mm-mid); }
-  .support-tabs button:first-child { border-top: none; }
+  /* Support page — one compact row of tabs; hide secondary copy */
+  .support-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .support-tab__btn { padding: 10px 6px 12px; }
+  .support-tab__meta,
+  .support-tab__sub,
+  .support-tab__mark { display: none; }
+  .support-tab__row { justify-content: center !important; }
+  .support-tab__text { text-align: center; min-width: 0; }
+  .support-tab__label--full { display: none; }
+  .support-tab__label--short { display: block; font-size: 12px !important; font-weight: 700 !important; line-height: 1.2 !important; }
 
   /* Donation grid — form full-width, aside below */
   .layout-donation-grid { grid-template-columns: 1fr; }

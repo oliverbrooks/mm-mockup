@@ -38,30 +38,51 @@ export default function SupportPage() {
       <div style={{ borderTop: '1.5px solid #000', borderBottom: '1.5px solid #000', background: 'var(--mm-paper)', position: 'sticky', top: 67, zIndex: 40 }}>
         <div className="wrap support-tabs">
           {([
-            { id: 'individual' as Tab, label: 'Individuals', sub: '£5 — £5,000', color: 'var(--mm-yellow)', num: '01' },
-            { id: 'institutional' as Tab, label: 'Institutional', sub: 'Foundations & trusts', color: 'var(--mm-blue)', num: '02' },
-            { id: 'corporate' as Tab, label: 'Corporate', sub: 'Companies & brands', color: 'var(--mm-orange)', num: '03' },
+            { id: 'individual' as Tab, label: 'Individuals', labelShort: 'People', sub: '£5 — £5,000', color: 'var(--mm-yellow)', num: '01' },
+            { id: 'institutional' as Tab, label: 'Institutional', labelShort: 'Institutions', sub: 'Foundations & trusts', color: 'var(--mm-blue)', num: '02' },
+            { id: 'corporate' as Tab, label: 'Corporate', labelShort: 'Corporate', sub: 'Companies & brands', color: 'var(--mm-orange)', num: '03' },
           ]).map((t, i) => {
             const active = tab === t.id
             return (
-              <button key={t.id} onClick={() => setTab(t.id)} style={{
-                position: 'relative', padding: '20px 24px', textAlign: 'left',
-                background: active ? t.color : 'transparent', color: '#000',
-                borderLeft: i === 0 ? 'none' : '1.5px solid #000',
-                borderRight: 'none', borderTop: 'none',
-                borderBottom: active ? '4px solid #000' : '4px solid transparent',
-                marginBottom: -2, cursor: 'pointer', transition: 'background 0.15s',
-                fontFamily: 'inherit',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
-                  <div>
-                    <div className="meta" style={{ fontSize: 11, color: active ? '#000' : 'var(--mm-grey)', marginBottom: 4, letterSpacing: '0.08em' }}>
+              <button
+                key={t.id}
+                type="button"
+                className="support-tab__btn"
+                onClick={() => setTab(t.id)}
+                style={{
+                  position: 'relative',
+                  textAlign: 'left',
+                  background: active ? t.color : 'transparent', color: '#000',
+                  borderLeft: i === 0 ? 'none' : '1.5px solid #000',
+                  borderRight: 'none', borderTop: 'none',
+                  borderBottom: active ? '4px solid #000' : '4px solid transparent',
+                  marginBottom: -2, cursor: 'pointer', transition: 'background 0.15s',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <div className="support-tab__row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+                  <div className="support-tab__text">
+                    <div
+                      className="support-tab__meta meta"
+                      style={{ fontSize: 11, color: active ? '#000' : 'var(--mm-grey)', marginBottom: 4, letterSpacing: '0.08em' }}
+                    >
                       {t.num} · {active ? 'Viewing' : 'Jump to'}
                     </div>
-                    <div style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>{t.label}</div>
-                    <div style={{ fontSize: 12, color: active ? '#000' : 'var(--mm-grey)', marginTop: 3, fontWeight: 500 }}>{t.sub}</div>
+                    <div className="support-tab__label support-tab__label--full" style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>{t.label}</div>
+                    <div className="support-tab__label support-tab__label--short" style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>{t.labelShort}</div>
+                    <div
+                      className="support-tab__sub"
+                      style={{ fontSize: 12, color: active ? '#000' : 'var(--mm-grey)', marginTop: 3, fontWeight: 500 }}
+                    >
+                      {t.sub}
+                    </div>
                   </div>
-                  <div style={{ fontSize: 18, fontWeight: 700, opacity: active ? 1 : 0.35, flexShrink: 0 }}>{active ? '●' : '→'}</div>
+                  <div
+                    className="support-tab__mark"
+                    style={{ fontSize: 18, fontWeight: 700, opacity: active ? 1 : 0.35, flexShrink: 0 }}
+                  >
+                    {active ? '●' : '→'}
+                  </div>
                 </div>
               </button>
             )

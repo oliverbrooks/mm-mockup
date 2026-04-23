@@ -316,6 +316,10 @@ html { scroll-behavior: smooth; }
 .support-tabs          { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
 .layout-donation-grid  { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
 
+/* Stories pages */
+.layout-story-hero  { display: grid; grid-template-columns: 1.1fr 1fr; }
+.layout-story       { display: grid; grid-template-columns: 1.4fr 1fr; gap: 80px; align-items: start; }
+
 /* Visit page */
 .layout-inside-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .layout-floor-card      { display: grid; grid-template-columns: 1fr 1fr; min-height: 260px; border: 1.5px solid #000; background: #fff; }
@@ -414,6 +418,11 @@ html { scroll-behavior: smooth; }
   /* Donation grid — form full-width, aside below */
   .layout-donation-grid { grid-template-columns: 1fr; }
   .layout-donation-grid aside > div { position: static !important; }
+
+  /* Stories pages */
+  .layout-story-hero { grid-template-columns: 1fr; }
+  .layout-story      { grid-template-columns: 1fr; gap: 40px; }
+  .layout-story aside > div { position: static !important; }
 
   /* Visit page */
   .visit-hero-img    { height: 240px; }

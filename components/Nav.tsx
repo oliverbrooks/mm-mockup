@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Wordmark } from './Logo'
 
 const NAV_LINKS = [
-  { label: 'Stories', href: '/exhibition' },
+  { label: 'Stories', href: '/stories' },
   { label: 'Exhibitions', href: '/exhibition' },
   { label: 'Learn', href: '/about' },
   { label: 'About', href: '/about' },

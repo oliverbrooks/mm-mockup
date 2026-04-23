@@ -1,22 +1,114 @@
-# CODING AGENTS: READ THIS FIRST
+# Migration Museum Website
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+The Migration Museum website is the museum's next digital home, designed to support storytelling, audience engagement, and movement-building ahead of the permanent museum opening in 2028.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+## Project Brief Alignment
 
-## What you should do — IMPORTANT
+This project is based on the "Digital access project" brief and aims to:
 
-**Read `migration-museum-website/project/index.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+- provide a compelling, story-led digital experience that reflects the museum's mission;
+- support a wide range of audiences, from culturally engaged visitors to educators, community groups, funders, and artists;
+- enable core value exchanges such as donations, newsletter sign-ups, and pathways to events and shop activity;
+- create a flexible content platform that can evolve through future campaigns and product phases.
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+### Strategic Goals
 
-## About the design files
+- **Reveal, remix, and reframe migration stories:** present nuanced, participatory narratives from multiple voices.
+- **Improve access and engagement:** serve audiences who may only ever interact with the museum online.
+- **Support operations and growth:** connect digital journeys to museum priorities, communications strategy, and campaign outcomes.
+- **Launch readiness:** target a robust launch window in 2026 with room for iterative optimisation.
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Technical Scope (from brief)
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+The broader digital programme anticipates integration and/or cross-promotion with:
 
-## Bundle contents
+- `Donorfy` (donations and supporter data);
+- `Mailchimp` (newsletter and mass engagement);
+- `Shopify` (commerce cross-promotion);
+- `Eventbrite` or future ticketing/box office platform;
+- social channels (`Instagram`, `LinkedIn`, `BlueSky`, `TikTok`, `YouTube`);
+- `Google Analytics` and Tag Manager for measurement;
+- `Cloudflare` for security and platform hardening (as required).
 
-- `migration-museum-website/README.md` — this file
-- `migration-museum-website/project/` — the `Migration Museum Website` project files (HTML prototypes, assets, components)
+## Tech Stack
+
+Current implementation stack in this repository:
+
+- **Framework:** `Next.js` 16
+- **UI library:** `React` 19
+- **Language:** `TypeScript`
+- **Runtime:** `Node.js` (LTS recommended)
+- **Package manager:** `npm`
+
+## Getting Started (Local Development)
+
+### 1) Install dependencies
+
+```bash
+npm install
+```
+
+### 2) Start the development server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### 3) Production build and local production run
+
+```bash
+npm run build
+npm run start
+```
+
+## Deploying to Vercel
+
+This project is optimized for deployment on Vercel.
+
+### Option A: Deploy via Vercel dashboard (recommended)
+
+1. Push this repository to GitHub/GitLab/Bitbucket.
+2. In [Vercel](https://vercel.com), click **Add New Project** and import the repository.
+3. Confirm framework detection as **Next.js**.
+4. Configure environment variables in **Project Settings -> Environment Variables** (if needed).
+5. Deploy.
+
+Vercel will automatically:
+
+- run `npm install`;
+- run `npm run build`;
+- serve the application with Next.js defaults.
+
+### Option B: Deploy via Vercel CLI
+
+Install and login:
+
+```bash
+npm i -g vercel
+vercel login
+```
+
+Deploy preview:
+
+```bash
+vercel
+```
+
+Deploy to production:
+
+```bash
+vercel --prod
+```
+
+## Recommended Environment Setup
+
+- Use a current LTS version of Node.js.
+- Keep deployment secrets and API keys in Vercel environment variables, not in source control.
+- Add project-specific integration keys (e.g. analytics, CRM tools) as requirements are implemented.
+
+## Notes
+
+- This README describes the project intent and delivery context from the digital access brief.
+- As integrations (donations, signup, analytics, CMS workflows) are implemented, update this file with concrete environment variables and service setup instructions.

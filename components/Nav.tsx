@@ -19,7 +19,12 @@ export function Nav({ active = '' }: { active?: string }) {
   return (
     <header className="nav">
       <div className="wrap nav__inner">
-        <Link href="/" aria-label="Migration Museum — home" style={{ display: 'flex', alignItems: 'center' }}>
+        <Link
+          href="/"
+          aria-label="Migration Museum — home"
+          className="nav__logo"
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
           <Wordmark size={13} />
         </Link>
 

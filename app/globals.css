@@ -365,6 +365,7 @@ html { scroll-behavior: smooth; }
 @media (max-width: 768px) {
   /* Nav */
   .nav__links    { display: none; }
+  .nav__logo     { margin-left: 6px; }
   .nav__hamburger {
     display: flex;
     align-items: center;

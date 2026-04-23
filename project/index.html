@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Migration Museum — All of us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/brand.css"/>
+<style>
+  html, body { height: 100%; overflow: hidden; background: #e8e6e1; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="tweaks-root"></div>
+
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "marqueeMode": "ticker"
+  }/*EDITMODE-END*/;
+  window.__mmMarqueeMode = TWEAKS.marqueeMode;
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="assets/components.jsx"></script>
+<script type="text/babel" src="assets/home-a.jsx"></script>
+<script type="text/babel" src="assets/home-b.jsx"></script>
+<script type="text/babel" src="assets/design-canvas.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+  const { useEffect, useState } = React;
+
+  function App() {
+    return (
+      <DesignCanvas title="Migration Museum — Homepage directions" subtitle="Two IA + visual approaches · A: Editorial Collage · B: Stories in motion">
+        <DCSection id="homepage" title="Homepage" subtitle="Same content priorities (mission · 2028 home · fundraising), different flow">
+          <DCArtboard id="home-a" label="A · Editorial Collage" width={1440} height={5200}>
+            <div data-screen-label="Home A — Editorial Collage">
+              <HomeA/>
+            </div>
+          </DCArtboard>
+          <DCArtboard id="home-b" label="B · Stories in Motion" width={1440} height={5200}>
+            <div data-screen-label="Home B — Stories in Motion">
+              <HomeB/>
+            </div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+  /* ————— TWEAKS PANEL ————— */
+  const MODES = [
+    { id: "bold",   label: "Bold",   sub: "Yellow / black scrolling band (default)" },
+    { id: "subtle", label: "Subtle", sub: "Paper tone, slower, smaller type" },
+    { id: "ticker", label: "Ticker", sub: "Hairline top strip, tiny uppercase" },
+    { id: "static", label: "Static", sub: "No scroll — centred bullet list" },
+    { id: "off",    label: "Off",    sub: "Hide the band entirely" },
+  ];
+
+  function setMarqueeMode(id) {
+    window.__mmMarqueeMode = id;
+    window.dispatchEvent(new Event("mm-marquee-change"));
+    window.parent.postMessage({ type: "__edit_mode_set_keys", edits: { marqueeMode: id } }, "*");
+  }
+
+  function TweaksPanel({ onClose }) {
+    const [mode, setMode] = useState(window.__mmMarqueeMode || "bold");
+    return (
+      <div style={{
+        position: "fixed", right: 24, bottom: 24, zIndex: 9999,
+        width: 320, background: "#fff", color: "#000",
+        border: "1.5px solid #000", boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+        fontFamily: "Work Sans, sans-serif",
+      }}>
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "14px 18px", borderBottom: "1.5px solid #000",
+          background: "var(--mm-yellow)",
+        }}>
+          <strong style={{ fontSize: 14, letterSpacing: "0.06em", textTransform: "uppercase" }}>Tweaks</strong>
+          <button onClick={onClose} style={{ fontSize: 18, lineHeight: 1 }}>×</button>
+        </div>
+        <div style={{ padding: 18 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--mm-grey)", marginBottom: 10 }}>
+            Scrolling banner
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {MODES.map(m => (
+              <label key={m.id} style={{
+                display: "flex", gap: 10, alignItems: "flex-start",
+                padding: "10px 12px", cursor: "pointer",
+                border: "1px solid " + (mode === m.id ? "#000" : "var(--mm-mid)"),
+                background: mode === m.id ? "var(--mm-paper)" : "#fff",
+              }}>
+                <input
+                  type="radio" name="marquee" checked={mode === m.id}
+                  onChange={() => { setMode(m.id); setMarqueeMode(m.id); }}
+                  style={{ marginTop: 3 }}
+                />
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{m.label}</div>
+                  <div style={{ fontSize: 12, color: "var(--mm-grey)", marginTop: 2 }}>{m.sub}</div>
+                </div>
+              </label>
+            ))}
+          </div>
+          <div style={{ marginTop: 14, fontSize: 11, color: "var(--mm-grey)", lineHeight: 1.4 }}>
+            Applies to both homepage variants. Scroll to the band beneath the hero to preview.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function Tweaks() {
+    const [open, setOpen] = useState(false);
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data?.type === "__activate_edit_mode")   setOpen(true);
+        if (e.data?.type === "__deactivate_edit_mode") setOpen(false);
+      };
+      window.addEventListener("message", onMsg);
+      window.parent.postMessage({ type: "__edit_mode_available" }, "*");
+      return () => window.removeEventListener("message", onMsg);
+    }, []);
+    return open ? <TweaksPanel onClose={() => setOpen(false)}/> : null;
+  }
+
+  ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<Tweaks/>);
+</script>
+</body>
+</html>

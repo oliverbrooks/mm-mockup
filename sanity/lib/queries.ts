@@ -1,45 +1,60 @@
 import { groq } from 'next-sanity'
 
+// Person projection — reused across queries
+const personProjection = groq`{
+  _id,
+  name,
+  role,
+  bio,
+  tone,
+  era,
+  origin,
+  "portrait": portrait { asset, hotspot, crop },
+  links,
+}`
+
 export const allStoriesQuery = groq`
   *[_type == "story"] | order(featured desc, publishedAt desc) {
+    _id,
     slug,
     title,
-    contributor,
-    role,
+    "contributor": contributor->.name,
+    "role": contributor->.role,
+    "tone": contributor->.tone,
     format,
     theme,
     era,
     readingTime,
-    tone,
     lede,
     pullQuote,
     featured,
     publishedAt,
-    "objectLabel": objectLabel,
-    contributorImage,
+    objectLabel,
+    "contributorImage": contributor->.portrait { asset, hotspot, crop },
     objectImage,
   }
 `
 
 export const storyBySlugQuery = groq`
   *[_type == "story" && slug.current == $slug][0] {
-    slug,
+    "slug": slug.current,
     title,
-    contributor,
-    role,
+    "contributor": contributor->.name,
+    "role": contributor->.role,
+    "bio": contributor->.bio,
+    "tone": contributor->.tone,
+    "contributorImage": contributor->.portrait { asset, hotspot, crop },
+    "contributorPerson": contributor->${personProjection},
     format,
     theme,
     era,
     readingTime,
-    tone,
     lede,
     pullQuote,
     body,
     objectLabel,
     objectCaption,
     objectImage,
-    contributorImage,
-    bio,
     publishedAt,
   }
 `
@@ -48,9 +63,23 @@ export const allStorySlugQuery = groq`
   *[_type == "story"] { "slug": slug.current }
 `
 
+export const relatedStoriesQuery = groq`
+  *[_type == "story" && slug.current != $slug] | order(publishedAt desc)[0..2] {
+    slug,
+    title,
+    "contributor": contributor->.name,
+    "role": contributor->.role,
+    format,
+    era,
+    readingTime,
+    tone,
+    lede
+  }
+`
+
 export const currentExhibitionQuery = groq`
   *[_type == "exhibition" && status == "Current"] | order(_updatedAt desc) [0] {
-    slug,
+    "slug": slug.current,
     title,
     lede,
     status,
@@ -69,7 +98,11 @@ export const currentExhibitionQuery = groq`
       asset,
     },
     accessInfo,
-    contributors,
+    "contributors": contributors[]-> {
+      name,
+      tone,
+      "image": portrait { asset, hotspot, crop },
+    },
     "featuredEvent": featuredEvent-> {
       title,
       date,

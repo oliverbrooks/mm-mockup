@@ -120,7 +120,7 @@ export function StoriesClient({ stories }: { stories: Story[] }) {
         {grid.length > 0 ? (
           <div className="layout-3col">
             {grid.map((story) => (
-              <StoryCard key={story.slug.current} story={story} />
+              <StoryCard key={(story as {_id?: string})._id ?? story.slug.current} story={story} />
             ))}
           </div>
         ) : (

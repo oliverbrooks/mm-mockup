@@ -21,7 +21,8 @@ const GRID_SLOTS = [
 export const revalidate = 3600
 
 // Hardcoded fallback — used when Sanity is not configured
-const FALLBACK_EXHIBITION = {
+const FALLBACK_EXHIBITION = {};
+const fish = {
   slug: { current: 'all-our-stories' },
   title: 'All Our Stories',
   lede: "Portraits, objects and oral histories from contributors across Britain — a flagship show of the museum's co-production approach.",
@@ -46,17 +47,17 @@ const FALLBACK_EXHIBITION = {
     { label: 'Quiet hour',      value: 'Wednesdays, 10–11am' },
   ],
   contributors: [
-    { name: 'Karen Arthur',     tone: 'red'    },
-    { name: 'Alok Mehta',       tone: 'violet' },
-    { name: 'Fatima Osman',     tone: 'green'  },
-    { name: 'Viktor Lazarenko', tone: 'cool'   },
-    { name: 'Mei Tan',          tone: 'yellow' },
-    { name: 'Joseph Adebayo',   tone: 'warm'   },
-    { name: 'Amira Haddad',     tone: 'violet' },
-    { name: 'Rosa López',       tone: 'red'    },
-    { name: 'Ishaan Patel',     tone: 'cool'   },
-    { name: 'Priya Singh',      tone: 'green'  },
-  ],
+    { name: 'Karen Arthur',     tone: 'red',    image: null },
+    { name: 'Alok Mehta',       tone: 'violet', image: null },
+    { name: 'Fatima Osman',     tone: 'green',  image: null },
+    { name: 'Viktor Lazarenko', tone: 'cool',   image: null },
+    { name: 'Mei Tan',          tone: 'yellow', image: null },
+    { name: 'Joseph Adebayo',   tone: 'warm',   image: null },
+    { name: 'Amira Haddad',     tone: 'violet', image: null },
+    { name: 'Rosa López',       tone: 'red',    image: null },
+    { name: 'Ishaan Patel',     tone: 'cool',   image: null },
+    { name: 'Priya Singh',      tone: 'green',  image: null },
+  ] as { name: string; tone: string; image: SanityImageSource | null }[],
   featuredEvent: {
     title: 'Karen Arthur in conversation',
     date: '2026-04-18T15:00:00Z',
@@ -66,7 +67,7 @@ const FALLBACK_EXHIBITION = {
   },
 }
 
-type Exhibition = typeof FALLBACK_EXHIBITION
+type Exhibition = typeof fish
 
 function formatDateRange(opening: string | null, closing: string | null) {
   if (!opening && !closing) return null
@@ -98,7 +99,7 @@ async function getExhibition(): Promise<Exhibition> {
       if (data) return data
     } catch {}
   }
-  return FALLBACK_EXHIBITION
+  return fish
 }
 
 export default async function ExhibitionPage() {
@@ -251,7 +252,17 @@ export default async function ExhibitionPage() {
           <div className="layout-contributors">
             {ex.contributors.map((c, i) => (
               <a key={c.name} href="#" style={{ display: 'block' }}>
-                <PhotoTile label={c.name} tone={c.tone} style={{ aspectRatio: '1/1' }} className={i % 3 === 0 ? 'cutout' : ''}/>
+                <PhotoTile
+                  label={c.name}
+                  tone={c.tone}
+                  image={c.image ?? null}
+                  imageAlt={c.name}
+                  imageSizes="(max-width: 480px) 50vw, (max-width: 960px) 33vw, 17vw"
+                  imageWidth={400}
+                  imageHeight={400}
+                  style={{ aspectRatio: '1/1' }}
+                  className={i % 3 === 0 ? 'cutout' : ''}
+                />
                 <div style={{ marginTop: 10, fontSize: 14, fontWeight: 600 }}>{c.name}</div>
               </a>
             ))}

@@ -6,7 +6,7 @@ import { PhotoTile } from '@/components/PhotoTile'
 import { AccentBar } from '@/components/AccentBar'
 import { STORIES } from '@/lib/stories'
 import { client } from '@/sanity/lib/client'
-import { storyBySlugQuery, allStorySlugQuery } from '@/sanity/lib/queries'
+import { storyBySlugQuery, allStorySlugQuery, relatedStoriesQuery } from '@/sanity/lib/queries'
 
 export const revalidate = 3600
 
@@ -37,7 +37,7 @@ async function getRelated(slug: string) {
   if (client) {
     try {
       const all = await client.fetch(
-        `*[_type == "story" && slug.current != $slug] | order(publishedAt desc)[0..2] { slug, title, contributor, role, format, era, readingTime, tone, lede }`,
+        relatedStoriesQuery,
         { slug },
         { next: { tags: ['stories'] } }
       )

@@ -68,20 +68,7 @@ export const exhibitionType = defineType({
       name: 'contributors',
       title: 'Contributors',
       type: 'array',
-      of: [{
-        type: 'object',
-        fields: [
-          defineField({ name: 'name', title: 'Name', type: 'string' }),
-          defineField({
-            name: 'tone',
-            title: 'Colour tone',
-            type: 'string',
-            options: { list: ['red', 'cool', 'violet', 'yellow', 'green', 'warm', 'mono', 'dusk'] },
-          }),
-          defineField({ name: 'image', title: 'Portrait', type: 'image', options: { hotspot: true } }),
-        ],
-        preview: { select: { title: 'name', subtitle: 'tone' } },
-      }],
+      of: [{ type: 'reference', to: [{ type: 'person' }] }],
     }),
     defineField({
       name: 'featuredEvent',
